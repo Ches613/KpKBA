@@ -44,6 +44,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,8 +53,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="DataUnit.cs" />
+    <Compile Include="FrmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConfig.designer.cs">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KpKBALogic.cs" />
     <Compile Include="KpKBAView.cs" />
+    <Compile Include="Laser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmConfig.resx">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Res\blank.png" />
+    <Content Include="Res\blank_shift.png" />
+    <Content Include="Res\cmd.png" />
+    <Content Include="Res\cmds.png" />
+    <Content Include="Res\delete.png" />
+    <Content Include="Res\down.png" />
+    <Content Include="Res\edit.png" />
+    <Content Include="Res\elem.png" />
+    <Content Include="Res\group.png" />
+    <Content Include="Res\open.png" />
+    <Content Include="Res\open_shift.png" />
+    <Content Include="Res\save.png" />
+    <Content Include="Res\save_as.png" />
+    <Content Include="Res\up.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
