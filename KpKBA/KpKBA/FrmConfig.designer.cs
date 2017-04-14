@@ -28,15 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Группы элементов");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Команды");
             this.numPort = new System.Windows.Forms.NumericUpDown();
             this.lblPort = new System.Windows.Forms.Label();
             this.txtHost = new System.Windows.Forms.TextBox();
             this.lblHost = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.treeView = new System.Windows.Forms.TreeView();
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,27 +105,6 @@
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // treeView
-            // 
-            this.treeView.HideSelection = false;
-            this.treeView.Location = new System.Drawing.Point(12, 51);
-            this.treeView.Name = "treeView";
-            treeNode1.ImageKey = "group.png";
-            treeNode1.Name = "grsNode";
-            treeNode1.SelectedImageKey = "group.png";
-            treeNode1.Text = "Группы элементов";
-            treeNode2.ImageIndex = 2;
-            treeNode2.Name = "cmdsNode";
-            treeNode2.SelectedImageKey = "cmds.png";
-            treeNode2.Text = "Команды";
-            this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            this.treeView.ShowRootLines = false;
-            this.treeView.Size = new System.Drawing.Size(167, 111);
-            this.treeView.TabIndex = 14;
-            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-            // 
             // FrmConfig
             // 
             this.AcceptButton = this.btnOK;
@@ -136,7 +112,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(350, 174);
-            this.Controls.Add(this.treeView);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.numPort);
@@ -164,6 +139,5 @@
         private System.Windows.Forms.Label lblHost;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.TreeView treeView;
     }
 }

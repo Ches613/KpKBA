@@ -69,7 +69,7 @@ namespace Scada.Comm.Devices.KpKBA
         {
             
             Host = "127.0.0.1";
-            Port = 123;
+            Port = 3490;
             numUM = 0;
 
         }
