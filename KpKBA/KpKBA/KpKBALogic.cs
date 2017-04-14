@@ -66,14 +66,22 @@ namespace Scada.Comm.Devices
             
             config = new Config();
             tcpClient = new TcpClient();
-            laser = new Laser(tcpClient);
             fatalError = false;
             state = "";
             writeState = false;
 
             InitKPTags(new List<KPTag>()
             {
-                new KPTag(1, Localization.UseRussian ? "Отправлено писем" : "Sent emails")
+                new KPTag(0, Localization.UseRussian ? "---" : "---"),
+                new KPTag(1, Localization.UseRussian ? "Актуальный номер рулона по первому ручь" : "Actual roll number UM1"),
+                 new KPTag(2, Localization.UseRussian ? "Актуальный номер рулона по второму ручь" : "Actual roll number UM2"),
+                  new KPTag(3, Localization.UseRussian ? "Счетчик печати" : "Print counter"),
+                  new KPTag(4, Localization.UseRussian ? "Счетчик печати Ok" : "Print counter Ok"),
+                   new KPTag(5, Localization.UseRussian ? "Печать активна" : "Print active"),
+                   new KPTag(6, Localization.UseRussian ? "Печатает" : "Printing"),
+                   new KPTag(7, Localization.UseRussian ? "Предуприждение" : "Alarm"),
+                    new KPTag(8, Localization.UseRussian ? "Код предуприждения" : "Alarm code")
+
             });
         }
 
@@ -96,8 +104,8 @@ namespace Scada.Comm.Devices
             else
             {
                 state = Localization.UseRussian ? 
-                    "Ожидание команд..." :
-                    "Waiting for commands...";
+                    "Ожидание данных..." :
+                    "Waiting for data...";
             }
         }
 
@@ -123,10 +131,24 @@ namespace Scada.Comm.Devices
                 writeState = false;
             }
 
-            Thread.Sleep(ReqParams.Delay);
+            SetCurData(1, laser.reqActualNum(1), 1);
+
+
+            SetCurData(2, laser.reqActualNum(2), 1);
+
+            StatusPack status = laser.getStatus();
+          
+            SetCurData(3, status.printCount, 1);
+            SetCurData(4, status.okPrintCount, 1);
+            SetCurData(5, Convert.ToDouble(status.printIsStarted), 1);
+            SetCurData(6, Convert.ToDouble(status.isPrinting), 1);
+               SetCurData(7, Convert.ToDouble(status.isAlarm), 1);
+               SetCurData(8, Convert.ToDouble(status.alarmCode), 1);
+
+        
         }
 
-       
+
 
         /// <summary>
         /// Выполнить действия при запуске линии связи
@@ -136,7 +158,9 @@ namespace Scada.Comm.Devices
             writeState = true;
             LoadConfig();
             InitTcpClient();
-            SetCurData(1, laser.reqActualNum(1), 1);
+            laser = new Laser(tcpClient);
+
         }
+
     }
 }
