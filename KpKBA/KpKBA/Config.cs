@@ -54,7 +54,7 @@ namespace Scada.Comm.Devices.KpKBA
         public int Port { get; set; }
 
         /// <summary>
-        /// Получить или установить номер запрашиваемого сообщения
+        /// Получить или установить флаг проверки времени опроса
         /// </summary>
         public bool CheckTimeSession { get; set; }
 
@@ -87,8 +87,8 @@ namespace Scada.Comm.Devices.KpKBA
                 XmlElement rootElem = xmlDoc.DocumentElement;
                 Host = rootElem.GetChildAsString("Host");
                 Port = rootElem.GetChildAsInt("Port");
-                CheckTimeSession = rootElem.GetAttrAsBool("CheckTimeSession");
-                //     numUM = rootElem.GetChildAsDouble("User Massege umber ");
+                CheckTimeSession = rootElem.GetChildAsBool("CheckTimeSession");
+               
 
                 errMsg = "";
                 return true;

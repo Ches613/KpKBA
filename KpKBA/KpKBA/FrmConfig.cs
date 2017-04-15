@@ -41,7 +41,7 @@ namespace Scada.Comm.Devices.KpKBA
         private int kpNum;             // номер настраиваемого КП
         private Config config;         // конфигурация КП
         private string configFileName; // имя файла конфигурации КП
-        private bool um1IsReq;
+       
        
 
 

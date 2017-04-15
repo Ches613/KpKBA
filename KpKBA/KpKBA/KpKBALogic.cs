@@ -124,8 +124,8 @@ namespace Scada.Comm.Devices
                         
         }
 
-       
-   
+
+
         /// <summary>
         /// Выполнить сеанс опроса КП
         /// </summary>
@@ -138,31 +138,43 @@ namespace Scada.Comm.Devices
                 writeState = false;
             }
 
-           
-            if(config.CheckTimeSession)
-            startSessionTime = DateTime.Now;
 
-            
+            if (config.CheckTimeSession)
+                startSessionTime = DateTime.Now;
 
-            
 
-         
+
+
+
+
             SetCurData(1, laser.reqActualNum(1), 1);
             SetCurData(2, laser.reqActualNum(2), 1);
 
-            StatusPack status = laser.getStatus();          
+            StatusPack status = laser.getStatus();
 
             SetCurData(3, status.printCount, 1);
             SetCurData(4, status.okPrintCount, 1);
             SetCurData(5, Convert.ToDouble(status.printIsStarted), 1);
-            SetCurData(6, Convert.ToDouble(status.isPrinting), 1);
-               SetCurData(7, Convert.ToDouble(status.isAlarm), 1);
+
+            if (!status.isPrinting && isPrintingCount > 0) {
+                isPrintingCount--;
+            }
+            if(status.isPrinting){
+                isPrintingCount = 5;
+                SetCurData(6, Convert.ToDouble(status.isPrinting), 1);
+            }
+
+            if(!status.isPrinting && isPrintingCount<=0)
+                SetCurData(6, Convert.ToDouble(status.isPrinting), 1);
+
+
+            SetCurData(7, Convert.ToDouble(status.isAlarm), 1);
                SetCurData(8, Convert.ToDouble(status.alarmCode), 1);
             SetCurData(9, Convert.ToDouble(liveBit = !liveBit), 1);
 
 
             if (config.CheckTimeSession)
-                SetCurData(10, Convert.ToDouble((DateTime.Now.Ticks - startSessionTime.Ticks)/10000), 1);
+                SetCurData(10, Convert.ToDouble(DateTime.Now.Subtract(startSessionTime).Ticks/10000), 1);
 
         }
 
