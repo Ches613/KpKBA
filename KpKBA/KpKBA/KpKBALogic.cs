@@ -86,7 +86,7 @@ namespace Scada.Comm.Devices
                    new KPTag(7, Localization.UseRussian ? "Предуприждение" : "Alarm"),
                     new KPTag(8, Localization.UseRussian ? "Код предуприждения" : "Alarm code"),
                     new KPTag(9, Localization.UseRussian ? "Бит жизни Kp измняет состояние при опросе" : "Live bit Kp"),
-                    new KPTag(10, Localization.UseRussian ? "Время опроса лазера" : "Time session")
+                    new KPTag(10, Localization.UseRussian ? "Время опроса лазера (мс)" : "Time session (mc)")
             });
         }
 
