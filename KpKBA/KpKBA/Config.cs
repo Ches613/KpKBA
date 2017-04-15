@@ -24,9 +24,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 
 namespace Scada.Comm.Devices.KpKBA
@@ -59,7 +56,7 @@ namespace Scada.Comm.Devices.KpKBA
         /// <summary>
         /// Получить или установить номер запрашиваемого сообщения
         /// </summary>
-        public int numUM { get; set; }
+        public bool CheckTimeSession { get; set; }
 
 
         /// <summary>
@@ -70,7 +67,7 @@ namespace Scada.Comm.Devices.KpKBA
             
             Host = "127.0.0.1";
             Port = 3490;
-            numUM = 0;
+            CheckTimeSession = false;
 
         }
 
@@ -90,7 +87,8 @@ namespace Scada.Comm.Devices.KpKBA
                 XmlElement rootElem = xmlDoc.DocumentElement;
                 Host = rootElem.GetChildAsString("Host");
                 Port = rootElem.GetChildAsInt("Port");
-           //     numUM = rootElem.GetChildAsDouble("User Massege umber ");
+                CheckTimeSession = rootElem.GetAttrAsBool("CheckTimeSession");
+                //     numUM = rootElem.GetChildAsDouble("User Massege umber ");
 
                 errMsg = "";
                 return true;
@@ -119,7 +117,8 @@ namespace Scada.Comm.Devices.KpKBA
 
                 rootElem.AppendElem("Host", Host);
                 rootElem.AppendElem("Port", Port);
-               
+                rootElem.AppendElem("CheckTimeSession", CheckTimeSession);
+
                 xmlDoc.Save(fileName);
                 errMsg = "";
                 return true;

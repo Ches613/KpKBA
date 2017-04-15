@@ -28,14 +28,9 @@
 
 
 using Scada.Comm.Devices.KpKBA;
-using Scada.Data.Models;
-using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace Scada.Comm.Devices
 {
@@ -52,7 +47,11 @@ namespace Scada.Comm.Devices
         private bool fatalError;            // фатальная ошибка при инициализации КП
         private string state;               // состояние КП
         private bool writeState;            // вывести состояние КП
-
+        private bool liveBit;              // бит жизни Kp
+        private int isPrintingCount;        // количество сканирований для принятия решения о том что лазер не печатает
+        private bool tmpIsPrinting;           // состояние печати при предыдущем сканировании
+        private DateTime startSessionTime;      // Время начала сессии
+        private DateTime endSessionTime;        // Время окончания сессии
 
         /// <summary>
         /// Конструктор
@@ -70,6 +69,11 @@ namespace Scada.Comm.Devices
             state = "";
             writeState = false;
 
+            isPrintingCount = 5;
+            tmpIsPrinting = false;
+            startSessionTime = new DateTime();
+            endSessionTime = new DateTime();
+
             InitKPTags(new List<KPTag>()
             {
                 new KPTag(0, Localization.UseRussian ? "---" : "---"),
@@ -80,8 +84,9 @@ namespace Scada.Comm.Devices
                    new KPTag(5, Localization.UseRussian ? "Печать активна" : "Print active"),
                    new KPTag(6, Localization.UseRussian ? "Печатает" : "Printing"),
                    new KPTag(7, Localization.UseRussian ? "Предуприждение" : "Alarm"),
-                    new KPTag(8, Localization.UseRussian ? "Код предуприждения" : "Alarm code")
-
+                    new KPTag(8, Localization.UseRussian ? "Код предуприждения" : "Alarm code"),
+                    new KPTag(9, Localization.UseRussian ? "Бит жизни Kp измняет состояние при опросе" : "Live bit Kp"),
+                    new KPTag(10, Localization.UseRussian ? "Время опроса лазера" : "Time session")
             });
         }
 
@@ -97,7 +102,7 @@ namespace Scada.Comm.Devices
             if (fatalError)
             {
                 state = Localization.UseRussian ? 
-                    "соедининие с KBA невозможна" : 
+                    "соедининие с KBA невозможно" : 
                     "connecting to KBA is impossible";
                 throw new Exception(errMsg);
             }
@@ -118,6 +123,8 @@ namespace Scada.Comm.Devices
             tcpClient.ReceiveTimeout = ReqParams.Timeout;
                         
         }
+
+       
    
         /// <summary>
         /// Выполнить сеанс опроса КП
@@ -131,21 +138,32 @@ namespace Scada.Comm.Devices
                 writeState = false;
             }
 
+           
+            if(config.CheckTimeSession)
+            startSessionTime = DateTime.Now;
+
+            
+
+            
+
+         
             SetCurData(1, laser.reqActualNum(1), 1);
-
-
             SetCurData(2, laser.reqActualNum(2), 1);
 
-            StatusPack status = laser.getStatus();
-          
+            StatusPack status = laser.getStatus();          
+
             SetCurData(3, status.printCount, 1);
             SetCurData(4, status.okPrintCount, 1);
             SetCurData(5, Convert.ToDouble(status.printIsStarted), 1);
             SetCurData(6, Convert.ToDouble(status.isPrinting), 1);
                SetCurData(7, Convert.ToDouble(status.isAlarm), 1);
                SetCurData(8, Convert.ToDouble(status.alarmCode), 1);
+            SetCurData(9, Convert.ToDouble(liveBit = !liveBit), 1);
 
-        
+
+            if (config.CheckTimeSession)
+                SetCurData(10, Convert.ToDouble((DateTime.Now.Ticks - startSessionTime.Ticks)/10000), 1);
+
         }
 
 

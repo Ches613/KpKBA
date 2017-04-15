@@ -66,6 +66,7 @@ namespace Scada.Comm.Devices.KpKBA
         {
             txtHost.Text = config.Host;
             numPort.SetValue(config.Port);
+            checkTimeSession.Checked = config.CheckTimeSession;
             
         }
 
@@ -76,7 +77,8 @@ namespace Scada.Comm.Devices.KpKBA
         {
             config.Host = txtHost.Text;
             config.Port = Convert.ToInt32(numPort.Value);
-           
+            config.CheckTimeSession = checkTimeSession.Checked;
+
         }
 
 
@@ -138,7 +140,9 @@ namespace Scada.Comm.Devices.KpKBA
 
         }
 
-        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        
+
+        private void checkTimeSession_CheckedChanged(object sender, EventArgs e)
         {
 
         }

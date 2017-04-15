@@ -43,7 +43,9 @@ namespace Scada.Comm.Devices
                     "Тег 5 - Печать активна \n" +
                     "Тег 6 - Печатает \n" +
                     "Тег 7 - Предуприждение \n" +
-                    "Тег 8 - Код предуприждения \n" :
+                    "Тег 8 - Код предуприждения \n" +
+                    "Tag 9 - Бит жизни Kp измняет состояние при опросе \n" +
+                        "Tag 10 - Время опроса лазера(Если активирован) \n" :
 
                     "Library Kp for TCP/IP connection to a MACSA lasersystem running ScanLinux \n\n" +
                         "Tag 1 - Actual roll number UM1 \n" +
@@ -53,9 +55,11 @@ namespace Scada.Comm.Devices
                         "Tag 5 - Print active \n" +
                         "Tag 6 - Printing \n" +
                         "Tag 7 - is Alarm \n" +
-                        "Tag 8 - Alarm code \n";
+                        "Tag 8 - is Alarm \n" +
+                        "Tag 9 - Live bit Kp \n" +
+                        "Tag 10 - Time session (if active)\n";
+               
 
-                    
             }
         }
 

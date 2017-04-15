@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using Scada.Comm.Channels;
-using Scada.Comm.Devices.KpKBA;
-using Utils;
 
 namespace Scada.Comm.Devices
 {
@@ -20,12 +14,16 @@ namespace Scada.Comm.Devices
         private int timeoutReq = 1000; // таймаут ожидания ответа на TCP запрос 
         private Cmds cmds = new Cmds();
         private byte[] readBuff = new byte[64];
+        private int isPrintingCount = 5;
+       
+
         /// <summary>
         /// Конструктор с временем ождания ответа по умолчанию (1 сек.)
         /// </summary>
         public Laser(TcpClient clientForLaserComm) {
 
             this.client = new TcpConnection(clientForLaserComm);
+           
         }
 
         /// <summary>
@@ -44,9 +42,10 @@ namespace Scada.Comm.Devices
         public double reqActualNum(byte numUM) {
 
             int beginUm = 0;
-            int dataCount = 0;         
-    
+            int dataCount = 0;
+
             
+
             client.Write(Cmds.getActualUmCmd(numUM), 0, Cmds.getActualUmCmd(numUM).Length);
 
           
@@ -71,6 +70,8 @@ namespace Scada.Comm.Devices
                 b[i] = readBuff[beginUm + i];
 
             double d = Scada.ScadaUtils.StrToDouble(System.Text.Encoding.Default.GetString(b));
+
+           
 
             return d;
         }
@@ -127,7 +128,7 @@ namespace Scada.Comm.Devices
 
             }
 
-         //   stausPack.bb = readBuff;
+         
 
             return stausPack;
         }
