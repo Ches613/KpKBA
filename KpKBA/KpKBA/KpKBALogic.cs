@@ -42,16 +42,14 @@ namespace Scada.Comm.Devices
     {
        
         private Config config;              // конфигурация соединения с KBA system
-        private TcpClient tcpClient;      // клиент TCP IP
         private Laser laser;
         private bool fatalError;            // фатальная ошибка при инициализации КП
         private string state;               // состояние КП
         private bool writeState;            // вывести состояние КП
         private bool liveBit;              // бит жизни Kp
         private int isPrintingCount;        // количество сканирований для принятия решения о том что лазер не печатает
-        private bool tmpIsPrinting;           // состояние печати при предыдущем сканировании
         private DateTime startSessionTime;      // Время начала сессии
-        private DateTime endSessionTime;        // Время окончания сессии
+        
 
         /// <summary>
         /// Конструктор
@@ -64,16 +62,13 @@ namespace Scada.Comm.Devices
             WorkState = WorkStates.Normal;
             
             config = new Config();
-            tcpClient = new TcpClient();
             fatalError = false;
             state = "";
             writeState = false;
 
             isPrintingCount = 5;
-            tmpIsPrinting = false;
             startSessionTime = new DateTime();
-            endSessionTime = new DateTime();
-
+           
             InitKPTags(new List<KPTag>()
             {
                 new KPTag(0, Localization.UseRussian ? "---" : "---"),
@@ -114,17 +109,7 @@ namespace Scada.Comm.Devices
             }
         }
 
-        /// <summary>
-        /// Инициализировать клиент TCP на основе конфигурации соединения
-        /// </summary>
-        private void InitTcpClient()
-        {
-            tcpClient.Connect(config.Host, config.Port);
-            tcpClient.ReceiveTimeout = ReqParams.Timeout;
-                        
-        }
-
-
+        
 
         /// <summary>
         /// Выполнить сеанс опроса КП
@@ -138,6 +123,7 @@ namespace Scada.Comm.Devices
                 writeState = false;
             }
 
+            kpStats.SessCnt++;
 
             if (config.CheckTimeSession)
                 startSessionTime = DateTime.Now;
@@ -146,6 +132,9 @@ namespace Scada.Comm.Devices
 
 
 
+        //    double NUM = laser.reqActualNum(1);
+         //   if (NUM == 0)
+        //        kpStats.SessErrCnt++;
 
             SetCurData(1, laser.reqActualNum(1), 1);
             SetCurData(2, laser.reqActualNum(2), 1);
@@ -176,6 +165,8 @@ namespace Scada.Comm.Devices
             if (config.CheckTimeSession)
                 SetCurData(10, Convert.ToDouble(DateTime.Now.Subtract(startSessionTime).Ticks/10000), 1);
 
+           
+
         }
 
 
@@ -187,8 +178,8 @@ namespace Scada.Comm.Devices
         {
             writeState = true;
             LoadConfig();
-            InitTcpClient();
-            laser = new Laser(tcpClient);
+           
+            laser = new Laser(config.Host, config.Port);
 
         }
 
