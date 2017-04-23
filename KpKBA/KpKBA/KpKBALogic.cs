@@ -31,6 +31,7 @@ using Scada.Comm.Devices.KpKBA;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace Scada.Comm.Devices
 {
@@ -132,14 +133,16 @@ namespace Scada.Comm.Devices
 
 
 
-        //    double NUM = laser.reqActualNum(1);
-         //   if (NUM == 0)
-        //        kpStats.SessErrCnt++;
+           
 
             SetCurData(1, laser.reqActualNum(1), 1);
+            Thread.Sleep(config.ReqDelay);
+
             SetCurData(2, laser.reqActualNum(2), 1);
+            Thread.Sleep(config.ReqDelay);
 
             StatusPack status = laser.getStatus();
+            Thread.Sleep(config.ReqDelay);
 
             SetCurData(3, status.printCount, 1);
             SetCurData(4, status.okPrintCount, 1);

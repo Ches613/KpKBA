@@ -54,7 +54,12 @@ namespace Scada.Comm.Devices.KpKBA
         public int Port { get; set; }
 
         /// <summary>
-        /// Получить или установить флаг проверки времени опроса
+        /// Получить или установить задержку между запросами внутри сессии сканирования в мс
+        /// </summary>
+        public int ReqDelay { get; set; }
+
+        /// <summary>
+        /// Получить или установить флаг проверки времени опроса 
         /// </summary>
         public bool CheckTimeSession { get; set; }
 
@@ -68,6 +73,7 @@ namespace Scada.Comm.Devices.KpKBA
             Host = "127.0.0.1";
             Port = 3490;
             CheckTimeSession = false;
+            ReqDelay = 100;
 
         }
 
@@ -88,6 +94,7 @@ namespace Scada.Comm.Devices.KpKBA
                 Host = rootElem.GetChildAsString("Host");
                 Port = rootElem.GetChildAsInt("Port");
                 CheckTimeSession = rootElem.GetChildAsBool("CheckTimeSession");
+                ReqDelay = rootElem.GetChildAsInt("ReqDelay");
                
 
                 errMsg = "";
@@ -118,6 +125,7 @@ namespace Scada.Comm.Devices.KpKBA
                 rootElem.AppendElem("Host", Host);
                 rootElem.AppendElem("Port", Port);
                 rootElem.AppendElem("CheckTimeSession", CheckTimeSession);
+                rootElem.AppendElem("ReqDelay", ReqDelay);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

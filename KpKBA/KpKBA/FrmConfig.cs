@@ -67,6 +67,7 @@ namespace Scada.Comm.Devices.KpKBA
             txtHost.Text = config.Host;
             numPort.SetValue(config.Port);
             checkTimeSession.Checked = config.CheckTimeSession;
+            numericUpDownDelay.SetValue(config.ReqDelay);
             
         }
 
@@ -78,6 +79,7 @@ namespace Scada.Comm.Devices.KpKBA
             config.Host = txtHost.Text;
             config.Port = Convert.ToInt32(numPort.Value);
             config.CheckTimeSession = checkTimeSession.Checked;
+            config.ReqDelay = Convert.ToInt32(numericUpDownDelay.Value);
 
         }
 
@@ -94,6 +96,7 @@ namespace Scada.Comm.Devices.KpKBA
             frmConfig.appDirs = appDirs;
             frmConfig.kpNum = kpNum;
             frmConfig.ShowDialog();
+            
         }
 
 
@@ -143,6 +146,16 @@ namespace Scada.Comm.Devices.KpKBA
         
 
         private void checkTimeSession_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numericUpDownDelay_ValueChanged(object sender, EventArgs e)
         {
 
         }
